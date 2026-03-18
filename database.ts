@@ -4,7 +4,7 @@
  * Connecting to the Express.js Backend API.
  */
 
-const BACKEND_PORT = 5000;
+const ENV_API_URL = import.meta.env.VITE_API_URL || null;
 let detectedApiUrl: string | null = null;
 let isBackendAvailable = false;
 
@@ -18,10 +18,10 @@ export class DatabaseService {
     
     // Possible API roots to check
     const candidates = [
-      '/api', // Relative path (best for proxies)
-      `${protocol}//${hostname}:${BACKEND_PORT}/api`, // Absolute current host
-      `http://localhost:${BACKEND_PORT}/api`, // Hardcoded localhost
-      `http://127.0.0.1:${BACKEND_PORT}/api` // Loopback IP
+      ...(ENV_API_URL ? [ENV_API_URL] : []),
+      '/api',
+      `http://localhost:5000/api`,
+      `http://127.0.0.1:5000/api`,
     ];
 
     for (const url of candidates) {
