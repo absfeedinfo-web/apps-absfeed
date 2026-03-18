@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABS FEED INDUSTRIES LIMITED - ERP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+            .no-print { display: none !important; }
+            .no-print-section { display: none !important; }
+            body { 
+                background: white !important; 
+                margin: 0 !important; 
+                padding: 0 !important; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact; 
+            }
+            #root > div > div:not(.modal-overlay) { display: none !important; }
+            .modal-overlay {
+                position: static !important;
+                background: none !important;
+                padding: 0 !important;
+            }
+            .modal-container { 
+                position: relative !important; 
+                width: 210mm !important; 
+                min-height: 297mm !important; 
+                box-shadow: none !important; 
+                border: none !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 15mm !important;
+                display: flex !important;
+                flex-direction: column !important;
+                background: white !important;
+            }
+            .invoice-content {
+                flex: 1 0 auto !important;
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+            .invoice-footer {
+                margin-top: auto !important;
+                padding-bottom: 5mm !important;
+            }
+            table { width: 100% !important; border-collapse: collapse !important; }
+            tr { page-break-inside: avoid !important; }
+            .bg-slate-50 { background-color: #f8fafc !important; }
+            .bg-slate-100 { background-color: #f1f5f9 !important; }
+            .bg-slate-900 { background-color: #0f172a !important; color: white !important; }
+            .bg-rose-50 { background-color: #fff1f2 !important; }
+            .bg-rose-100 { background-color: #ffe4e6 !important; }
+            .bg-emerald-50 { background-color: #ecfdf5 !important; }
+            .bg-emerald-100 { background-color: #d1fae5 !important; }
+            .bg-amber-50 { background-color: #fffbeb !important; }
+            .bg-amber-100 { background-color: #fef3c7 !important; }
+            .bg-[#722f37] { background-color: #722f37 !important; color: white !important; }
+            .text-slate-900 { color: #0f172a !important; }
+            .text-slate-400 { color: #94a3b8 !important; }
+            .text-slate-500 { color: #64748b !important; }
+            .text-rose-600 { color: #e11d48 !important; }
+            .text-rose-700 { color: #be123c !important; }
+            .text-emerald-600 { color: #059669 !important; }
+            .text-emerald-700 { color: #047857 !important; }
+            .text-[#722f37] { color: #722f37 !important; }
+            .border-rose-100 { border-color: #ffe4e6 !important; }
+            .border-emerald-100 { border-color: #d1fae5 !important; }
+            .border-slate-100 { border-color: #f1f5f9 !important; }
+            .border-slate-200 { border-color: #e2e8f0 !important; }
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "recharts": "https://esm.sh/recharts@^3.7.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
+    "next": "https://esm.sh/next@^16.1.6",
+    "next/": "https://esm.sh/next@^16.1.6/",
+    "mongodb": "https://esm.sh/mongodb@^7.1.0",
+    "qrcode.react": "https://esm.sh/qrcode.react@^4.1.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-slate-50 text-slate-900">
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
