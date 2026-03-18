@@ -1,4 +1,3 @@
-
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
@@ -6,34 +5,32 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
 
-// MongoDB Connection URI
-const uri = "mongodb+srv://absfeedinfo_db_user:JLrQFVl3aX92VgMd@cluster0.mongodb.net/abs_feed_erp?retryWrites=true&w=majority";
+const uri = "mongodb+srv://apps_admin:53%40nMTi%40wSiM9La@apps-cluster.v4kqifc.mongodb.net/abs_feed_erp?retryWrites=true&w=majority&appName=apps-cluster";
 const client = new MongoClient(uri);
 
-// Permissive CORS for development
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Handle preflight requests
 app.options('*', cors());
-
 app.use(express.json());
 
 let db;
 
 async function connectDB() {
   try {
-    console.log("Attempting to connect to MongoDB Atlas...");
     await client.connect();
     db = client.db("abs_feed_erp");
-    console.log("Successfully connected to MongoDB Atlas");
-    console.log("Express Server listening on port " + port);
+    console.log("✅ Connected to MongoDB Atlas");
+
+    // ✅ Only one app.listen(), lives here
+    app.listen(port, () => {
+      console.log(`🚀 Server running on port ${port}`);
+    });
   } catch (e) {
-    console.error("MongoDB Connection error:", e);
-    // Exit process if DB connection fails to let supervisor restart
+    console.error("❌ MongoDB Connection error:", e);
     process.exit(1);
   }
 }
@@ -51,8 +48,9 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Specific Sales Routes
+// POST Sale
 app.post('/api/sales', async (req, res) => {
+  if (!db) return res.status(503).json({ error: "Database not connected" });
   try {
     const sale = req.body;
     const salesCol = db.collection('sales');
@@ -61,7 +59,6 @@ app.post('/api/sales', async (req, res) => {
 
     await salesCol.insertOne(sale);
 
-    // Update Product Stock
     for (const item of sale.items) {
       await productsCol.updateOne(
         { code: item.productCode },
@@ -69,7 +66,6 @@ app.post('/api/sales', async (req, res) => {
       );
     }
 
-    // Update Customer Balance
     if (sale.dueAmount > 0) {
       await customersCol.updateOne(
         { id: sale.customerId },
@@ -84,7 +80,9 @@ app.post('/api/sales', async (req, res) => {
   }
 });
 
+// DELETE Sale
 app.delete('/api/sales/:invoiceNo', async (req, res) => {
+  if (!db) return res.status(503).json({ error: "Database not connected" });
   try {
     const inv = req.params.invoiceNo;
     const salesCol = db.collection('sales');
@@ -115,30 +113,34 @@ app.delete('/api/sales/:invoiceNo', async (req, res) => {
   }
 });
 
-// Bulk sync for master data
+// Bulk Sync
 app.post('/api/sync/:collection', async (req, res) => {
+  if (!db) return res.status(503).json({ error: "Database not connected" });
   try {
     const collectionName = req.params.collection;
     const data = req.body;
+
+    // ✅ Validate BEFORE deleting existing data
+    if (!Array.isArray(data)) {
+      return res.status(400).json({ error: "Body must be an array" });
+    }
+
     const collection = db.collection(collectionName);
-    
     await collection.deleteMany({});
-    if (data && data.length > 0) {
+    if (data.length > 0) {
       await collection.insertMany(data);
     }
-    res.json({ success: true, count: data ? data.length : 0 });
+    res.json({ success: true, count: data.length });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 });
 
-// Generic find all
+// Generic GET all
 app.get('/api/:collection', async (req, res) => {
+  if (!db) return res.status(503).json({ error: "Database not connected" });
   try {
-    const collectionName = req.params.collection;
-    if (!db) return res.status(503).json({ error: "Database not connected" });
-    
-    const collection = db.collection(collectionName);
+    const collection = db.collection(req.params.collection);
     const data = await collection.find({}).toArray();
     res.json(data);
   } catch (e) {
@@ -146,11 +148,7 @@ app.get('/api/:collection', async (req, res) => {
   }
 });
 
-// Catch-all 404 for API
+// Catch-all 404
 app.use('/api', (req, res) => {
   res.status(404).json({ error: "API Route not found", url: req.originalUrl });
-});
-
-app.listen(port, () => {
-  console.log(`Server started. API accessible at http://localhost:${port}/api`);
 });

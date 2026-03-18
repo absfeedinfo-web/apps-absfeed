@@ -3,8 +3,8 @@ import { MongoClient, Db, ServerApiVersion } from 'mongodb';
 
 // Password from previous prompt: JLrQFVl3aX92VgMd
 // Cluster from latest sample: cluster0.rxywjg9.mongodb.net
-const MONGODB_URI = "mongodb+srv://absfeedinfo_db_user:JLrQFVl3aX92VgMd@cluster0.rxywjg9.mongodb.net/abs_feed_erp?retryWrites=true&w=majority&appName=Cluster0";
-
+const MONGODB_URI = "mongodb+srv://apps_admin:53@nMTi@wSiM9La@apps-cluster.v4kqifc.mongodb.net/?appName=apps-cluster";
+// const MONGODB_URI = "mongodb+srv://absfeedinfo_db_user:JLrQFVl3aX92VgMd@cluster0.rxywjg9.mongodb.net/abs_feed_erp?retryWrites=true&w=majority&appName=Cluster0";
 let cachedClient: MongoClient | null = null;
 let cachedDb: Db | null = null;
 
