@@ -14,8 +14,6 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// ✅ Replace with this
-app.options('/(.*)', cors());
 app.use(express.json());
 
 let db;
