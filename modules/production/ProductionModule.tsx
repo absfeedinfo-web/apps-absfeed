@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ProductionSheet } from './components/ProductionSheet';
 import { CompanyExpense } from './components/CompanyExpense';
@@ -7,33 +6,68 @@ import RawMaterialsList from './components/RawMaterialsList';
 import { ProductionEntry, Expense, RawMaterial, Product, Formula } from './types';
 import { RAW_MATERIALS as INITIAL_MATERIALS, PRODUCTS as INITIAL_PRODUCTS } from './constants';
 import { LayoutDashboard, ClipboardList, TrendingUp, Wallet, Settings, Database } from 'lucide-react';
+import { DatabaseService } from '../../database'; // ✅ Added
 
 interface ProductionModuleProps {
   userRole: 'ADMIN' | 'SALES' | 'ACCOUNTS' | 'VISITOR' | 'CUSTOMER' | 'OFFICER';
-  products: any[]; // Using any[] to avoid type conflicts between root and module types
+  products: any[];
   setProducts: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 export const ProductionModule: React.FC<ProductionModuleProps> = ({ userRole, products: appProducts, setProducts }) => {
   const [activeTab, setActiveTab] = useState<'sheet' | 'dashboard' | 'expense' | 'formula' | 'raw_materials'>('sheet');
-  const [entries, setEntries] = useState<ProductionEntry[]>(() => {
-    const saved = localStorage.getItem('abs_production_data');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [expenses, setExpenses] = useState<Expense[]>(() => {
-    const saved = localStorage.getItem('abs_expense_data');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [formulas, setFormulas] = useState<Formula[]>(() => {
-    const saved = localStorage.getItem('abs_formulas');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [rawMaterials, setRawMaterials] = useState<RawMaterial[]>(() => {
-    const saved = localStorage.getItem('abs_raw_materials');
-    return saved ? JSON.parse(saved) : INITIAL_MATERIALS;
-  });
 
-  // Map app products to production module products if needed
+  // ✅ Replaced localStorage init with empty defaults
+  const [entries, setEntries] = useState<ProductionEntry[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [formulas, setFormulas] = useState<Formula[]>([]);
+  const [rawMaterials, setRawMaterials] = useState<RawMaterial[]>(INITIAL_MATERIALS);
+  const [loaded, setLoaded] = useState(false);
+
+  // ✅ Load from DB on mount
+  useEffect(() => {
+    async function loadData() {
+      const [e, ex, f, rm] = await Promise.all([
+        DatabaseService.getProductionEntries(),
+        DatabaseService.getExpenses(),
+        DatabaseService.getFormulas(),
+        DatabaseService.getRawMaterials(),
+      ]);
+      if (e && e.length > 0) setEntries(e);
+      if (ex && ex.length > 0) setExpenses(ex);
+      if (f && f.length > 0) setFormulas(f);
+      if (rm && rm.length > 0) setRawMaterials(rm);
+      setLoaded(true);
+    }
+    loadData();
+  }, []);
+
+  // ✅ Save to DB + localStorage fallback whenever data changes
+  useEffect(() => {
+    if (!loaded) return;
+    DatabaseService.saveProductionEntries(entries);
+    localStorage.setItem('abs_production_data', JSON.stringify(entries));
+  }, [entries, loaded]);
+
+  useEffect(() => {
+    if (!loaded) return;
+    DatabaseService.saveExpenses(expenses);
+    localStorage.setItem('abs_expense_data', JSON.stringify(expenses));
+  }, [expenses, loaded]);
+
+  useEffect(() => {
+    if (!loaded) return;
+    DatabaseService.saveFormulas(formulas);
+    localStorage.setItem('abs_formulas', JSON.stringify(formulas));
+  }, [formulas, loaded]);
+
+  useEffect(() => {
+    if (!loaded) return;
+    DatabaseService.saveRawMaterials(rawMaterials);
+    localStorage.setItem('abs_raw_materials', JSON.stringify(rawMaterials));
+  }, [rawMaterials, loaded]);
+
+  // Map app products to production module products
   const products: Product[] = appProducts.map(p => ({
     code: p.code,
     name: p.name,
@@ -41,23 +75,6 @@ export const ProductionModule: React.FC<ProductionModuleProps> = ({ userRole, pr
     protein: p.protein || '0%',
     category: (p.category === 'Poultry' || p.category === 'Fish' || p.category === 'Cattle') ? p.category : 'Poultry'
   }));
-
-  // Persistence Logic
-  useEffect(() => {
-    localStorage.setItem('abs_production_data', JSON.stringify(entries));
-  }, [entries]);
-
-  useEffect(() => {
-    localStorage.setItem('abs_expense_data', JSON.stringify(expenses));
-  }, [expenses]);
-
-  useEffect(() => {
-    localStorage.setItem('abs_formulas', JSON.stringify(formulas));
-  }, [formulas]);
-
-  useEffect(() => {
-    localStorage.setItem('abs_raw_materials', JSON.stringify(rawMaterials));
-  }, [rawMaterials]);
 
   const totalExpense = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const totalProductionValue = entries.reduce((sum, entry) => sum + entry.totalValue, 0);

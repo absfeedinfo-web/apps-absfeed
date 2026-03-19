@@ -156,4 +156,20 @@ export class DatabaseService {
 
   static async getUsers() { return await this.request('/users'); }
   static async saveUsers(users: any[]) { return await this.request('/sync/users', 'POST', users); }
+
+  // Production
+  static async getProductionEntries() { return await this.request('/production_entries'); }
+  static async saveProductionEntries(entries: any[]) { return await this.request('/sync/production_entries', 'POST', entries); }
+
+  // Expenses
+  static async getExpenses() { return await this.request('/expenses'); }
+  static async saveExpenses(expenses: any[]) { return await this.request('/sync/expenses', 'POST', expenses); }
+
+  // Formulas
+  static async getFormulas() { return await this.request('/formulas'); }
+  static async saveFormulas(formulas: any[]) { return await this.request('/sync/formulas', 'POST', formulas); }
+
+  // Raw Materials
+  static async getRawMaterials() { return await this.request('/raw_materials'); }
+  static async saveRawMaterials(materials: any[]) { return await this.request('/sync/raw_materials', 'POST', materials); }
 }
