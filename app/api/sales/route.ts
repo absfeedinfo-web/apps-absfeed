@@ -92,3 +92,23 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const sale = await request.json();
+    const { db } = await connectToDatabase();
+
+    console.log(`[API] Updating sale: #ABS-${sale.invoiceNo}`);
+
+    await db.collection('sales').updateOne(
+      { invoiceNo: sale.invoiceNo },
+      { $set: sale }
+    );
+
+    console.log(`[API] Sale #ABS-${sale.invoiceNo} updated successfully.`);
+    return NextResponse.json({ success: true });
+  } catch (e: any) {
+    console.error(`[API] Sale update error:`, e.message);
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
+}

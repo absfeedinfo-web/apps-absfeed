@@ -95,4 +95,5 @@ export class DatabaseService {
   static async saveSales(sales: any[]) { return await this.request('/sync/sales', 'POST', sales); }
   static async addSale(sale: any) { return await this.request('/sales', 'POST', sale); }
   static async deleteSale(invoiceNo: string) { return await this.request(`/sales?invoiceNo=${invoiceNo}`, 'DELETE'); }
+  static async updateSale(sale: any) { return await this.request(`/sales`, 'PUT', sale); }
 }
