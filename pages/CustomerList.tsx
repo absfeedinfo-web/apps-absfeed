@@ -103,6 +103,7 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers, sales, officers,
     setEditingCustomer(null);
   };
 
+  // Handle payment submission for a sale
   const handlePaymentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (role === 'VISITOR') {
