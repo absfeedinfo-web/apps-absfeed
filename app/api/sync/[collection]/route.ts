@@ -12,7 +12,7 @@ export async function POST(
 
     console.log(`[API] Bulk sync triggered for collection: ${collectionName}`);
 
-    const validCollections = ['products', 'customers', 'officers', 'sales'];
+    const validCollections = ['products', 'customers', 'officers', 'sales', 'formulas'];
     if (!validCollections.includes(collectionName)) {
       console.error(`[API] Invalid sync attempt for collection: ${collectionName}`);
       return NextResponse.json({ error: 'Invalid collection' }, { status: 400 });

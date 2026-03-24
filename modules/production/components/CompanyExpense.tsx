@@ -108,56 +108,96 @@ export const CompanyExpense: React.FC<CompanyExpenseProps> = ({ expenses, setExp
       </div>
 
       <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-200 overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-slate-50 border-b border-slate-100">
-              <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Date / Category</th>
-              <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Description</th>
-              <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Method</th>
-              <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Amount</th>
-              <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-50">
-            {expenses.map(expense => (
-              <tr key={expense.id} className="hover:bg-slate-50/50 transition-colors">
-                <td className="px-8 py-6">
+        {/* Desktop Table */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-100">
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Date / Category</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Description</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Method</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Amount</th>
+                <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {expenses.map(expense => (
+                <tr key={expense.id} className="hover:bg-slate-50/50 transition-colors">
+                  <td className="px-8 py-6">
+                    <p className="text-sm font-black text-slate-900">{formatDate(expense.date)}</p>
+                    <span className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[8px] font-black uppercase tracking-widest">{expense.category}</span>
+                  </td>
+                  <td className="px-8 py-6">
+                    <p className="text-sm font-bold text-slate-600">{expense.description}</p>
+                  </td>
+                  <td className="px-8 py-6">
+                    <div className="flex items-center gap-2">
+                      {expense.paymentMethod === 'Cash' && <Banknote size={14} className="text-emerald-500" />}
+                      {expense.paymentMethod === 'Mobile Banking' && <Smartphone size={14} className="text-rose-500" />}
+                      {expense.paymentMethod === 'Bank' && <CreditCard size={14} className="text-blue-500" />}
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{expense.paymentMethod}</p>
+                    </div>
+                  </td>
+                  <td className="px-8 py-6 text-right">
+                    <p className="text-sm font-black text-rose-900">৳{expense.amount.toLocaleString()}</p>
+                  </td>
+                  <td className="px-8 py-6 text-right">
+                    <div className="flex justify-end gap-2">
+                      <button onClick={() => openModal(expense)} className="p-2 text-slate-300 hover:text-blue-600 transition-colors">
+                        <Edit size={18} />
+                      </button>
+                      <button onClick={() => handleDeleteExpense(expense.id)} className="p-2 text-slate-300 hover:text-rose-600 transition-colors">
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {expenses.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-8 py-20 text-center text-slate-400 italic text-sm font-medium">No expense records found.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="md:hidden divide-y divide-slate-100">
+          {expenses.map(expense => (
+            <div key={expense.id} className="p-5 hover:bg-slate-50/50 transition-colors">
+              <div className="flex justify-between items-start mb-3">
+                <div>
                   <p className="text-sm font-black text-slate-900">{formatDate(expense.date)}</p>
                   <span className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[8px] font-black uppercase tracking-widest">{expense.category}</span>
-                </td>
-                <td className="px-8 py-6">
-                  <p className="text-sm font-bold text-slate-600">{expense.description}</p>
-                </td>
-                <td className="px-8 py-6">
-                  <div className="flex items-center gap-2">
-                    {expense.paymentMethod === 'Cash' && <Banknote size={14} className="text-emerald-500" />}
-                    {expense.paymentMethod === 'Mobile Banking' && <Smartphone size={14} className="text-rose-500" />}
-                    {expense.paymentMethod === 'Bank' && <CreditCard size={14} className="text-blue-500" />}
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{expense.paymentMethod}</p>
-                  </div>
-                </td>
-                <td className="px-8 py-6 text-right">
-                  <p className="text-sm font-black text-rose-900">৳{expense.amount.toLocaleString()}</p>
-                </td>
-                <td className="px-8 py-6 text-right">
-                  <div className="flex justify-end gap-2">
-                    <button onClick={() => openModal(expense)} className="p-2 text-slate-300 hover:text-blue-600 transition-colors">
-                      <Edit size={18} />
-                    </button>
-                    <button onClick={() => handleDeleteExpense(expense.id)} className="p-2 text-slate-300 hover:text-rose-600 transition-colors">
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-            {expenses.length === 0 && (
-              <tr>
-                <td colSpan={5} className="px-8 py-20 text-center text-slate-400 italic text-sm font-medium">No expense records found.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                </div>
+                <p className="text-base font-black text-rose-900">৳{expense.amount.toLocaleString()}</p>
+              </div>
+              <p className="text-sm font-bold text-slate-600 mb-3">{expense.description}</p>
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  {expense.paymentMethod === 'Cash' && <Banknote size={14} className="text-emerald-500" />}
+                  {expense.paymentMethod === 'Mobile Banking' && <Smartphone size={14} className="text-rose-500" />}
+                  {expense.paymentMethod === 'Bank' && <CreditCard size={14} className="text-blue-500" />}
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{expense.paymentMethod}</p>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={() => openModal(expense)} className="p-2 text-slate-300 hover:text-blue-600 transition-colors bg-slate-100 rounded-xl">
+                    <Edit size={16} />
+                  </button>
+                  <button onClick={() => handleDeleteExpense(expense.id)} className="p-2 text-slate-300 hover:text-rose-600 transition-colors bg-slate-100 rounded-xl">
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+          {expenses.length === 0 && (
+            <div className="px-8 py-20 text-center text-slate-400 italic text-sm font-medium">
+              No expense records found.
+            </div>
+          )}
+        </div>
       </div>
 
       {showModal && (

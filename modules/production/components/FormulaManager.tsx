@@ -126,6 +126,28 @@ export const FormulaManager: React.FC<FormulaManagerProps> = ({ formulas, setFor
     printWindow.document.close();
   };
 
+  const handleDeleteFormula = (formulaId: string) => {
+    if (userRole === 'VISITOR') {
+      alert(lang === 'BN' ? "ভিজিটর মোডে ডিলিট করা সম্ভব নয়।" : "Deletion is not allowed in Visitor mode.");
+      return;
+    }
+    if (!window.confirm(lang === 'BN' ? 'আপনি কি নিশ্চিতভাবে এই ফর্মুলাটি মুছে ফেলতে চান?' : 'Are you sure you want to delete this formula?')) return;
+
+    const updatedFormulas = formulas.filter(f => f.id !== formulaId);
+    setFormulas(updatedFormulas);
+
+    // Clear editor if deleted formula was selected
+    const deletedFormula = formulas.find(f => f.id === formulaId);
+    if (deletedFormula && selectedProduct?.code === deletedFormula.productCode) {
+      setItems([]);
+    }
+
+    // Persist to database
+    DatabaseService.saveFormulas(updatedFormulas).catch(err => 
+      console.error("Failed to delete formula from DB", err)
+    );
+  };
+
   const loadFormula = useCallback((productCode: string) => {
     const formula = formulas.find(f => f.productCode === productCode);
     if (formula) {
@@ -375,6 +397,16 @@ export const FormulaManager: React.FC<FormulaManagerProps> = ({ formulas, setFor
                       title="Print Formula"
                     >
                       <Printer size={18} />
+                    </button>
+                    <button 
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        handleDeleteFormula(f.id);
+                      }}
+                      className="p-2 text-slate-500 hover:text-rose-500 transition-colors"
+                      title="Delete Formula"
+                    >
+                      <Trash2 size={18} />
                     </button>
                     <Calculator size={18} className="text-slate-500 group-hover:text-white transition-colors" />
                   </div>
