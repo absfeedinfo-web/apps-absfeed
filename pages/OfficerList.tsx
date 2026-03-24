@@ -594,6 +594,12 @@ const OfficerList: React.FC<OfficerListProps> = ({ officers, sales, customers, p
                     <option value="Territory Manager">Territory Manager</option>
                     <option value="Sales Manager">Sales Manager</option>
                     <option value="Regional Manager">Regional Manager</option>
+                    <option value="Assistant General Manager (AGM)">Assistant General Manager (AGM)</option>
+                    <option value="General Manager (GM)">General Manager (GM)</option>
+                    <option value="Deputy Director">Deputy Director</option>
+                    <option value="Director">Director</option>
+                    <option value="Managing Director (MD)">Managing Director (MD)</option>
+                    <option value="Honorable Chairman">Honorable Chairman</option>
                   </select>
                 </div>
               </div>
