@@ -1,7 +1,7 @@
 
 import React, { useState, useContext, useMemo } from 'react';
 import { Expense, ExpenseCategory } from '../types';
-import { Plus, Trash2, Save, Wallet, Search, X, TrendingUp, ArrowUpRight, ArrowDownRight, Edit, CreditCard, Smartphone, Banknote } from 'lucide-react';
+import { Plus, Trash2, Save, Wallet, Search, X, TrendingUp, ArrowUpRight, ArrowDownRight, Edit, CreditCard, Smartphone, Banknote, Printer } from 'lucide-react';
 import { LanguageContext } from '../../../App';
 import { formatDate } from '../../../utils';
 
@@ -79,6 +79,116 @@ export const CompanyExpense: React.FC<CompanyExpenseProps> = ({ expenses, setExp
 
   const totalExpense = useMemo(() => expenses.reduce((sum, e) => sum + Number(e.amount), 0), [expenses]);
 
+  const handlePrint = () => {
+  const printWindow = window.open('', '_blank');
+  if (!printWindow) return;
+
+    const html = `
+      <html>
+        <head>
+          <title>Company Expenses Report</title>
+          <script src="https://cdn.tailwindcss.com"></script>
+          <style>
+            @media print { body { padding: 0; margin: 0; } }
+            body { font-family: 'Inter', sans-serif; }
+          </style>
+        </head>
+        <body class="p-10">
+          <div class="max-w-5xl mx-auto">
+            <div class="border-b-4 border-[#722f37] pb-6 text-center mb-8">
+              <div class="flex justify-between items-start">
+                <div class="w-20 h-20 bg-[#722f37] rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0">
+                  <span class="text-2xl font-black italic">ABS</span>
+                </div>
+                <div class="flex-1 text-center px-4">
+                  <h1 class="text-4xl font-black text-[#722f37] uppercase leading-none tracking-tighter">ABS FEED</h1>
+                  <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
+                  <div class="grid grid-cols-2 gap-8 text-[9px] mt-4 font-bold text-slate-500 text-left">
+                    <div class="border-l-2 border-slate-200 pl-4">
+                      <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Head Office:</p>
+                      <p>House No. 12 (4th floor), Road No. 25, Sector-07, Uttara, Dhaka-1230</p>
+                      <p>Email: absfeed.info@gmail.com | Phone: +8809638-201686</p>
+                    </div>
+                    <div class="text-right border-r-2 border-slate-200 pr-4">
+                      <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Regional Office:</p>
+                      <p>Ahyan City, Bagerdanga, Fultola, Khulna-9210</p>
+                      <p>Phone: +8801918-594466 | Web: www.absfeed.com</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-20 h-20 opacity-0 shrink-0"></div>
+              </div>
+              <div class="mt-8 flex justify-center">
+                <div class="bg-slate-900 text-white px-10 py-2.5 rounded-full text-[12px] font-black uppercase tracking-[0.4em] shadow-xl">
+                  COMPANY EXPENSES REPORT
+                </div>
+              </div>
+              <p class="text-slate-400 text-[10px] font-bold mt-3 uppercase tracking-widest">Report Date: ${new Date().toLocaleString()}</p>
+            </div>
+
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-900 text-white">
+                  <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest">Date</th>
+                  <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest">Category</th>
+                  <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest">Description</th>
+                  <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest">Method</th>
+                  <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                ${expenses.map(exp => `
+                  <tr>
+                    <td class="py-4 px-4 text-xs font-bold text-slate-600">${exp.date}</td>
+                    <td class="py-4 px-4">
+                      <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[8px] font-black uppercase">${exp.category}</span>
+                    </td>
+                    <td class="py-4 px-4 text-xs font-bold text-slate-700">${exp.description}</td>
+                    <td class="py-4 px-4 text-xs font-bold text-slate-500 uppercase">${exp.paymentMethod}</td>
+                    <td class="py-4 px-4 text-right font-black text-[#722f37] text-xs">৳${Number(exp.amount).toLocaleString()}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+              <tfoot class="border-t-4 border-slate-900">
+                <tr class="bg-slate-50">
+                  <td colspan="4" class="py-6 px-4 text-right font-black text-slate-900 uppercase text-xs">Grand Total Expenses</td>
+                  <td class="py-6 px-4 text-right font-black text-[#722f37] text-lg">৳${totalExpense.toLocaleString()}</td>
+                </tr>
+              </tfoot>
+            </table>
+
+            <div class="grid grid-cols-3 gap-10 mt-20 pt-10">
+              <div class="text-center">
+                <div class="border-t border-slate-300 pt-2">
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Prepared By</p>
+                </div>
+              </div>
+              <div class="text-center">
+                <div class="border-t border-slate-300 pt-2">
+                  <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Accounts Dept</p>
+                </div>
+              </div>
+              <div class="text-center">
+                <div class="border-t-2 border-slate-900 pt-2">
+                  <p class="text-[10px] font-black text-slate-900 uppercase tracking-widest">Managing Director</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            window.onload = () => {
+              window.print();
+              setTimeout(() => window.close(), 500);
+            };
+          </script>
+        </body>
+      </html>
+    `;
+
+    printWindow.document.write(html);
+    printWindow.document.close();
+  };
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex justify-between items-center">
@@ -86,12 +196,20 @@ export const CompanyExpense: React.FC<CompanyExpenseProps> = ({ expenses, setExp
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">{lang === 'BN' ? 'কোম্পানি খরচ' : 'Company Expenses'}</h1>
           <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1">Operational & administrative cost tracking</p>
         </div>
-        <button 
-          onClick={() => openModal()}
-          className="bg-[#722f37] hover:bg-[#5a252c] text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-rose-900/20 flex items-center gap-2"
-        >
-          <Plus size={18} /> {lang === 'BN' ? 'খরচ যোগ করুন' : 'Add Expense'}
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handlePrint}
+            className="bg-slate-100 text-slate-700 px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all hover:bg-slate-200 flex items-center gap-2"
+          >
+            <Printer size={18} /> {lang === 'BN' ? 'প্রিন্ট' : 'Print'}
+          </button>
+          <button
+            onClick={() => openModal()}
+            className="bg-[#722f37] hover:bg-[#5a252c] text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl shadow-rose-900/20 flex items-center gap-2"
+          >
+            <Plus size={18} /> {lang === 'BN' ? 'খরচ যোগ করুন' : 'Add Expense'}
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
