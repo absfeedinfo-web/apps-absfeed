@@ -172,9 +172,9 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
 
   const handlePrintInvoice = (sale: Sale) => {
     const qrEl = document.getElementById('invoice-qr-svg');
-    const qrSvgHtml = qrEl ? qrEl.outerHTML : '';
-    const qrDataUrl = qrSvgHtml
-      ? 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(qrSvgHtml)))
+    const svgEl = qrEl?.querySelector('svg');
+    const qrDataUrl = svgEl
+      ? 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgEl.outerHTML)))
       : '';
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
@@ -433,7 +433,7 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
                   <td className="px-8 py-6">
                     <div className="flex justify-center gap-1">
                       <button onClick={() => setViewInvoice(sale)} className="p-2 text-slate-400 hover:text-[#722f37] transition-all" title="View"><Eye size={18} /></button>
-                      <button onClick={() => handlePrintInvoice(sale)} className="p-2 text-slate-400 hover:text-blue-600 transition-all" title="Print"><Printer size={18} /></button>
+                      <button onClick={() => { setViewInvoice(sale); setTimeout(() => handlePrintInvoice(sale), 600); }} className="p-2 text-slate-400 hover:text-blue-600 transition-all" title="Print"><Printer size={18} /></button>
                       {role === 'ADMIN' && (
                         <>
                           <button onClick={() => onEditSale(sale)} className="p-2 text-slate-400 hover:text-emerald-600 transition-all" title="Edit"><Edit2 size={18} /></button>
@@ -631,13 +631,14 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
 
                   {/* QR Code Section - Positioned between Shipping and Totals */}
                   <div className="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-2xl bg-white shadow-sm shrink-0 self-start">
-                    <QRCodeSVG 
-                      id="invoice-qr-svg"
-                      value={`INV: #ABS-${viewInvoice.invoiceNo}\nDATE: ${viewInvoice.date}\nCUST: ${viewInvoice.customerId}\nOFFICER: ${viewInvoice.officerId}\nTOTAL: ৳${viewInvoice.netAmount}`}
-                      size={70}
-                      level="H"
-                      includeMargin={false}
-                    />
+                    <div id="invoice-qr-svg">
+                      <QRCodeSVG 
+                        value={`INV: #ABS-${viewInvoice.invoiceNo}\nDATE: ${viewInvoice.date}\nCUST: ${viewInvoice.customerId}\nOFFICER: ${viewInvoice.officerId}\nTOTAL: ৳${viewInvoice.netAmount}`}
+                        size={70}
+                        level="H"
+                        includeMargin={false}
+                      />
+                    </div>
                     <span className="text-[7px] font-black text-slate-400 uppercase mt-2 tracking-widest">Verify Invoice</span>
                   </div>
                   
