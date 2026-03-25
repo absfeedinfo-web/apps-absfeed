@@ -182,6 +182,7 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
         <head>
           <title>Invoice - ${sale.invoiceNo}</title>
           <script src="https://cdn.tailwindcss.com"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
           <style>
             @media print {
               .no-print { display: none; }
@@ -305,6 +306,12 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
                 </div>
               </div>
 
+              <!-- QR Code Section -->
+              <div class="flex flex-col items-center justify-center p-3 border border-slate-100 bg-white shadow-sm shrink-0 self-start">
+                <div id="qr-canvas"></div>
+                <span class="text-[7px] font-black text-slate-400 uppercase mt-2 tracking-widest">Verify Invoice</span>
+              </div>
+
               <div class="w-64 bg-rose-50 p-6 border border-rose-100 space-y-3">
                 <div class="flex justify-between text-[10px] font-bold text-slate-600 uppercase tracking-widest">
                   <span>Gross Total</span>
@@ -344,8 +351,18 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
           </div>
           <script>
             window.onload = () => {
-              window.print();
-              setTimeout(() => window.close(), 500);
+              new QRCode(document.getElementById("qr-canvas"), {
+                text: "INV: #ABS-${sale.invoiceNo}\nDATE: ${sale.date}\nCUST: ${sale.customerId}\nOFFICER: ${sale.officerId}\nTOTAL: ${sale.netAmount}",
+                width: 80,
+                height: 80,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+              });
+              setTimeout(() => {
+                window.print();
+                setTimeout(() => window.close(), 500);
+              }, 300);
             };
           </script>
         </body>
