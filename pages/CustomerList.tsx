@@ -155,10 +155,13 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers, sales, officers,
 
     // Persist to Database
     try {
-      await DatabaseService.updateSale(updatedSale);
-      await DatabaseService.saveCustomers(updatedCustomers);
+      const saleResult = await DatabaseService.updateSale(updatedSale);
+      const customerResult = await DatabaseService.saveCustomers(updatedCustomers);
+      console.log('Sale update result:', saleResult);
+      console.log('Customer update result:', customerResult);
     } catch (err) {
       console.error("Failed to persist payment update", err);
+      alert(lang === 'BN' ? "ডেটাবেজে সেভ ব্যর্থ হয়েছে!" : "Failed to save to database!");
     }
 
     setPaymentModal(null);
