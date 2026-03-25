@@ -538,9 +538,10 @@ const OfficerList: React.FC<OfficerListProps> = ({ officers, sales, customers, p
 
       {/* Add / Edit Officer Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm no-print">
-        <div className="bg-white w-full max-w-2xl rounded-[2rem] shadow-2xl border border-white/20 flex flex-col max-h-[90vh] relative z-[10000]">
-          <div className="bg-slate-900 p-6 text-white flex justify-between items-center shrink-0 rounded-t-[2rem]">
+        <div className="fixed inset-0 z-[9999] bg-slate-900/70 backdrop-blur-sm no-print overflow-y-auto">
+          <div className="min-h-full flex items-center justify-center p-4 py-8">
+          <div className="bg-white w-full max-w-2xl rounded-[2rem] shadow-2xl border border-white/20 relative z-[10000]">
+          <div className="bg-slate-900 p-6 text-white flex justify-between items-center rounded-t-[2rem]">
               <div className="flex items-center gap-4">
                 <div className={`p-3 rounded-2xl shadow-xl ${editingOfficer ? 'bg-blue-600' : 'bg-[#722f37]'}`}>
                   {editingOfficer ? <Edit size={24} /> : <UserPlus size={24} />}
@@ -559,7 +560,7 @@ const OfficerList: React.FC<OfficerListProps> = ({ officers, sales, customers, p
               </button>
             </div>
             
-            <form className="p-6 md:p-10 space-y-6 overflow-y-auto flex-1" onSubmit={handleSubmit}>
+            <form className="p-6 md:p-10 space-y-6" onSubmit={handleSubmit}>
               {editingOfficer && (
                 <div className="bg-blue-50 border border-blue-200 p-4 rounded-2xl flex items-start gap-3">
                   <AlertCircle className="text-blue-600 shrink-0 mt-0.5" size={18} />
@@ -633,13 +634,14 @@ const OfficerList: React.FC<OfficerListProps> = ({ officers, sales, customers, p
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex gap-4 shrink-0">
+              <div className="pt-4 border-t border-slate-100 flex gap-4">
                 <button type="button" onClick={() => { setShowModal(false); setEditingOfficer(null); }} className="flex-1 bg-slate-100 text-slate-500 font-black py-4 rounded-2xl transition-all active:scale-95 uppercase text-[10px] tracking-widest">Cancel</button>
                 <button type="submit" className="flex-1 bg-slate-900 text-white font-black py-5 rounded-2xl transition-all active:scale-95 shadow-xl shadow-slate-200 uppercase text-[10px] tracking-widest flex items-center justify-center gap-2">
                    <CheckCircle size={16} /> {editingOfficer ? 'Update Records' : 'Confirm Recruitment'}
                 </button>
               </div>
             </form>
+          </div>
           </div>
         </div>
       )}
