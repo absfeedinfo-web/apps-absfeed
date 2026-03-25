@@ -654,9 +654,9 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers, sales, officers,
 
       {/* Add / Edit Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm no-print">
-          <div className="bg-white w-full max-w-2xl rounded-[3rem] shadow-2xl overflow-hidden border border-white/20">
-            <div className="bg-slate-900 p-8 text-white flex justify-between items-center">
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm no-print overflow-y-auto">
+        <div className="bg-white w-full max-w-2xl rounded-[2rem] shadow-2xl border border-white/20 flex flex-col max-h-[90vh] my-auto">
+          <div className="bg-slate-900 p-6 text-white flex justify-between items-center shrink-0 rounded-t-[2rem]">
               <div className="flex items-center gap-4">
                 <div className={`p-3 rounded-2xl shadow-xl ${editingCustomer ? 'bg-amber-500' : 'bg-emerald-600'}`}>
                   {editingCustomer ? <Edit size={24} /> : <User size={24} />}
@@ -675,7 +675,7 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers, sales, officers,
               </button>
             </div>
             
-            <form className="p-10 space-y-8" onSubmit={handleSubmit}>
+            <form className="p-6 md:p-10 space-y-6 overflow-y-auto flex-1" onSubmit={handleSubmit}>
               {editingCustomer && (
                 <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl flex items-start gap-3">
                   <AlertCircle className="text-amber-600 shrink-0 mt-0.5" size={18} />
@@ -745,7 +745,7 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers, sales, officers,
                 <textarea rows={2} value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-rose-800 font-bold text-slate-700 resize-none" />
               </div>
 
-              <div className="pt-6 border-t border-slate-100 flex gap-4">
+              <div className="pt-4 border-t border-slate-100 flex gap-4 shrink-0">
                 <button type="button" onClick={() => { setShowModal(false); setEditingCustomer(null); }} className="flex-1 bg-slate-100 text-slate-500 font-black py-5 rounded-2xl transition-all active:scale-95 uppercase text-[10px] tracking-widest">Cancel</button>
                 <button type="submit" className="flex-1 bg-slate-900 text-white font-black py-5 rounded-2xl transition-all active:scale-95 shadow-xl shadow-slate-200 uppercase text-[10px] tracking-widest">Save Changes</button>
               </div>

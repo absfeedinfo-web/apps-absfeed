@@ -171,11 +171,8 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
   };
 
   const handlePrintInvoice = (sale: Sale) => {
-    const qrEl = document.getElementById('invoice-qr-svg');
-    const svgEl = qrEl?.querySelector('svg');
-    const qrDataUrl = svgEl
-      ? 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgEl.outerHTML)))
-      : '';
+    const qrText = `INV:#ABS-${sale.invoiceNo} DATE:${sale.date} CUST:${sale.customerId} OFFICER:${sale.officerId} TOTAL:${sale.netAmount}`;
+    const qrDataUrl = `https://api.qrserver.com/v1/create-qr-code/?size=80x80&ecc=H&data=${encodeURIComponent(qrText)}`;
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
@@ -312,7 +309,7 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
 
               <!-- QR Code -->
               <div style="display:flex;flex-direction:column;align-items:center;padding:12px;border:1px solid #f1f5f9;background:white;border-radius:12px;">
-                ${qrDataUrl ? `<img src="${qrDataUrl}" width="80" height="80" />` : ''}
+                <img id="qr-img" src="${qrDataUrl}" width="80" height="80" />
                 <span style="font-size:7px;font-weight:900;color:#94a3b8;text-transform:uppercase;letter-spacing:0.2em;margin-top:6px;">Verify Invoice</span>
               </div>
 
@@ -355,8 +352,14 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
           </div>
           <script>
             window.onload = () => {
-              window.print();
-              setTimeout(() => window.close(), 500);
+              const qrImg = document.getElementById('qr-img');
+              if (qrImg && !qrImg.complete) {
+                qrImg.onload = () => { window.print(); setTimeout(() => window.close(), 500); };
+                qrImg.onerror = () => { window.print(); setTimeout(() => window.close(), 500); };
+              } else {
+                window.print();
+                setTimeout(() => window.close(), 500);
+              }
             };
           </script>
         </body>
@@ -433,7 +436,7 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
                   <td className="px-8 py-6">
                     <div className="flex justify-center gap-1">
                       <button onClick={() => setViewInvoice(sale)} className="p-2 text-slate-400 hover:text-[#722f37] transition-all" title="View"><Eye size={18} /></button>
-                      <button onClick={() => { setViewInvoice(sale); setTimeout(() => handlePrintInvoice(sale), 600); }} className="p-2 text-slate-400 hover:text-blue-600 transition-all" title="Print"><Printer size={18} /></button>
+                      <button onClick={() => handlePrintInvoice(sale)} className="p-2 text-slate-400 hover:text-blue-600 transition-all" title="Print"><Printer size={18} /></button>
                       {role === 'ADMIN' && (
                         <>
                           <button onClick={() => onEditSale(sale)} className="p-2 text-slate-400 hover:text-emerald-600 transition-all" title="Edit"><Edit2 size={18} /></button>
