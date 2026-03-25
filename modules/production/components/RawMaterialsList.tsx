@@ -105,9 +105,9 @@ export default function RawMaterialsList({ rawMaterials, setRawMaterials, userRo
             body { font-family: 'Inter', sans-serif; }
           </style>
         </head>
-        <body class="p-10">
+        <body class="p-4">
           <div class="max-w-5xl mx-auto">
-            <div class="border-b-4 border-[#722f37] pb-6 text-center mb-8">
+            <div class="border-b-4 border-[#722f37] pb-3 text-center mb-4">
               <div class="flex justify-between items-start">
                 <div class="w-20 h-20 bg-[#722f37] rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0">
                   <span class="text-2xl font-black italic">ABS</span>
@@ -142,20 +142,20 @@ export default function RawMaterialsList({ rawMaterials, setRawMaterials, userRo
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-900 text-white">
-                  <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest">Code</th>
-                  <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest">Material Name</th>
-                  <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest text-right">Stock (KG)</th>
-                  <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest text-right">Price/KG</th>
-                  <th class="py-4 px-4 text-[10px] font-black uppercase tracking-widest text-right">Total Value</th>
+                  <th class="py-2 px-4 text-[10px] font-black uppercase tracking-widest">Code</th>
+                  <th class="py-2 px-4 text-[10px] font-black uppercase tracking-widest">Material Name</th>
+                  <th class="py-2 px-4 text-[10px] font-black uppercase tracking-widest text-right">Stock (KG)</th>
+                  <th class="py-2 px-4 text-[10px] font-black uppercase tracking-widest text-right">Price/KG</th>
+                  <th class="py-2 px-4 text-[10px] font-black uppercase tracking-widest text-right">Total Value</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-200">
                 ${filteredMaterials.map(rm => `
                   <tr>
-                    <td class="py-4 px-4 font-black text-[#722f37] text-xs">${rm.id}</td>
-                    <td class="py-4 px-4 text-xs font-black text-slate-900 uppercase">${rm.name}</td>
-                    <td class="py-4 px-4 text-right font-bold text-slate-700 text-xs">${rm.stock || 0} ${rm.unit}</td>
-                    <td class="py-4 px-4 text-right font-bold text-emerald-600 text-xs">৳${rm.pricePerKg || 0}</td>
+                    <td class="py-2 px-4 font-black text-[#722f37] text-xs">${rm.id}</td>
+                    <td class="py-2 px-4 text-xs font-black text-slate-900 uppercase">${rm.name}</td>
+                    <td class="py-2 px-4 text-right font-bold text-slate-700 text-xs">${rm.stock || 0} ${rm.unit}</td>
+                    <td class="py-2 px-4 text-right font-bold text-emerald-600 text-xs">৳${rm.pricePerKg || 0}</td>
                     <td class="py-4 px-4 text-right font-black text-[#722f37] text-xs">৳${(rm.totalValue || 0).toLocaleString()}</td>
                   </tr>
                 `).join('')}
