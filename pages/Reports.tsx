@@ -171,6 +171,11 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
   };
 
   const handlePrintInvoice = (sale: Sale) => {
+    const qrEl = document.getElementById('invoice-qr-svg');
+    const qrSvgHtml = qrEl ? qrEl.outerHTML : '';
+    const qrDataUrl = qrSvgHtml
+      ? 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(qrSvgHtml)))
+      : '';
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
@@ -182,7 +187,6 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
         <head>
           <title>Invoice - ${sale.invoiceNo}</title>
           <script src="https://cdn.tailwindcss.com"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
           <style>
             @media print {
               .no-print { display: none; }
@@ -306,10 +310,10 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
                 </div>
               </div>
 
-              <!-- QR Code Section -->
-              <div class="flex flex-col items-center justify-center p-3 border border-slate-100 bg-white shadow-sm shrink-0 self-start">
-                <div id="qr-canvas"></div>
-                <span class="text-[7px] font-black text-slate-400 uppercase mt-2 tracking-widest">Verify Invoice</span>
+              <!-- QR Code -->
+              <div style="display:flex;flex-direction:column;align-items:center;padding:12px;border:1px solid #f1f5f9;background:white;border-radius:12px;">
+                ${qrDataUrl ? `<img src="${qrDataUrl}" width="80" height="80" />` : ''}
+                <span style="font-size:7px;font-weight:900;color:#94a3b8;text-transform:uppercase;letter-spacing:0.2em;margin-top:6px;">Verify Invoice</span>
               </div>
 
               <div class="w-64 bg-rose-50 p-6 border border-rose-100 space-y-3">
@@ -351,18 +355,8 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
           </div>
           <script>
             window.onload = () => {
-              new QRCode(document.getElementById("qr-canvas"), {
-                text: "INV: #ABS-${sale.invoiceNo}\nDATE: ${sale.date}\nCUST: ${sale.customerId}\nOFFICER: ${sale.officerId}\nTOTAL: ${sale.netAmount}",
-                width: 80,
-                height: 80,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-              });
-              setTimeout(() => {
-                window.print();
-                setTimeout(() => window.close(), 500);
-              }, 300);
+              window.print();
+              setTimeout(() => window.close(), 500);
             };
           </script>
         </body>
@@ -638,6 +632,7 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
                   {/* QR Code Section - Positioned between Shipping and Totals */}
                   <div className="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-2xl bg-white shadow-sm shrink-0 self-start">
                     <QRCodeSVG 
+                      id="invoice-qr-svg"
                       value={`INV: #ABS-${viewInvoice.invoiceNo}\nDATE: ${viewInvoice.date}\nCUST: ${viewInvoice.customerId}\nOFFICER: ${viewInvoice.officerId}\nTOTAL: ৳${viewInvoice.netAmount}`}
                       size={70}
                       level="H"
