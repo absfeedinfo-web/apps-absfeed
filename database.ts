@@ -152,6 +152,7 @@ export class DatabaseService {
   static async getSales() { return await this.request('/sales'); }
   static async addSale(sale: any) { return await this.request('/sales', 'POST', sale); }
   static async updateSale(sale: any) { return await this.request(`/sales/${sale.invoiceNo}`, 'PUT', sale); }
+  static async saveSales(sales: any[]) { return await this.request('/sync/sales', 'POST', sales); }
   static async deleteSale(invoiceNo: string) { return await this.request(`/sales/${invoiceNo}`, 'DELETE'); }
 
   static async getUsers() { return await this.request('/users'); }

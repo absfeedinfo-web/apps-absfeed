@@ -155,7 +155,7 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers, sales, officers,
 
     // Persist to Database
     try {
-      const saleResult = await DatabaseService.updateSale(updatedSale);
+      const saleResult = await DatabaseService.saveSales(updatedSales);
       const customerResult = await DatabaseService.saveCustomers(updatedCustomers);
       console.log('Sale update result:', saleResult);
       console.log('Customer update result:', customerResult);
@@ -170,7 +170,9 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers, sales, officers,
 
   const handleDelete = (id: string) => {
     if (confirm(lang === 'BN' ? 'আপনি কি নিশ্চিতভাবে এই কাস্টমারটি মুছে ফেলতে চান?' : 'Are you sure you want to delete this customer?')) {
-      setCustomers(prev => prev.filter(c => c.id !== id));
+      const updatedCustomers = customers.filter(c => c.id !== id);
+      setCustomers(updatedCustomers);
+      DatabaseService.saveCustomers(updatedCustomers).catch(err => console.error("Failed to delete customer", err));
     }
   };
 
