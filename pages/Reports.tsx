@@ -217,17 +217,17 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
             </div>
 
               <div class="mt-6 flex justify-center">
-                <div class="bg-slate-900 text-white px-8 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.4em] shadow-lg border border-white/20">
+                <div class="bg-slate-900 text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.4em] shadow-lg border border-white/20">
                   SALES INVOICE
                 </div>
               </div>
               <div class="mt-2 flex justify-between items-center px-4">
                 <div class="text-left">
-                  <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest">Invoice Number</p>
+                  <p class="text-slate-400 text-[8px] font-black uppercase tracking-widest">Invoice Number</p>
                   <p class="text-lg font-black text-[#722f37]">#ABS-${sale.invoiceNo}</p>
                 </div>
                 <div class="text-right">
-                  <p class="text-slate-400 text-[9px] font-black uppercase tracking-widest">Date</p>
+                  <p class="text-slate-400 text-[8px] font-black uppercase tracking-widest">Date</p>
                   <p class="text-lg font-black text-slate-900">${formatDate(sale.date)}</p>
                 </div>
               </div>
@@ -266,13 +266,13 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
               </div>
             </div>
 
-            <table class="w-full text-left border-collapse mb-8 relative z-10">
+            <table class="w-full text-left border-collapse mb-6 relative z-10">
               <thead>
                 <tr class="bg-[#722f37] text-white">
-                  <th class="py-3 px-4 text-[9px] font-black uppercase tracking-widest">Description</th>
-                  <th class="py-3 px-4 text-[9px] font-black uppercase tracking-widest text-center">Qty</th>
-                  <th class="py-3 px-4 text-[9px] font-black uppercase tracking-widest text-right">Rate</th>
-                  <th class="py-3 px-4 text-[9px] font-black uppercase tracking-widest text-right">Total</th>
+                  <th class="py-3 px-2 text-[8px] font-black uppercase tracking-widest">Description</th>
+                  <th class="py-3 px-2 text-[8px] font-black uppercase tracking-widest text-center">Qty</th>
+                  <th class="py-3 px-2 text-[8px] font-black uppercase tracking-widest text-right">Rate</th>
+                  <th class="py-3 px-2 text-[8px] font-black uppercase tracking-widest text-right">Total</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100">
