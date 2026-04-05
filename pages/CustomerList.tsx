@@ -151,6 +151,7 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers, sales, officers,
     // Update viewStatement if it's open
     if (viewStatement && viewStatement.id === customer.id) {
       setViewStatement(updatedCustomer);
+      console.log('Balance for viewStatement:', viewStatement);
     }
 
     // Persist to Database

@@ -293,36 +293,46 @@ export default function App() {
   const [editingSale, setEditingSale] = useState<Sale | null>(null);
 
   const initDb = async () => {
-    setIsDbLoading(true);
-    try {
-      const connected = await DatabaseService.checkConnection();
-      setIsOnline(connected);
+  setIsDbLoading(true);
+  try {
+    const connected = await DatabaseService.checkConnection(); // now waits up to 60s with backoff
+    setIsOnline(connected);
 
-      const [p, c, o, s, u] = await Promise.all([
-        DatabaseService.getProducts(),
-        DatabaseService.getCustomers(),
-        DatabaseService.getOfficers(),
-        DatabaseService.getSales(),
-        DatabaseService.getUsers()
-      ]);
-      
-      setProducts(p && p.length > 0 ? p : INITIAL_PRODUCTS);
-      setCustomers(c && c.length > 0 ? c : INITIAL_CUSTOMERS);
-      setOfficers(o && o.length > 0 ? o : INITIAL_OFFICERS);
-      setSales(s || []);
-      setUsers(u || []);
-    } catch (err) {
-      console.warn("Initial load fallbacked to local data", err);
-      setIsOnline(false);
+    if (!connected) {
       setProducts(INITIAL_PRODUCTS);
       setCustomers(INITIAL_CUSTOMERS);
       setOfficers(INITIAL_OFFICERS);
       setSales([]);
       setUsers([]);
-    } finally {
-      setIsDbLoading(false);
+      return;
     }
-  };
+
+    // ✅ Only fetch data after confirmed connection
+    const [p, c, o, s, u] = await Promise.all([
+      DatabaseService.getProducts(),
+      DatabaseService.getCustomers(),
+      DatabaseService.getOfficers(),
+      DatabaseService.getSales(),
+      DatabaseService.getUsers()
+    ]);
+
+    setProducts(p && p.length > 0 ? p : INITIAL_PRODUCTS);
+    setCustomers(c && c.length > 0 ? c : INITIAL_CUSTOMERS);
+    setOfficers(o && o.length > 0 ? o : INITIAL_OFFICERS);
+    setSales(s || []);
+    setUsers(u || []);
+  } catch (err) {
+    console.warn("Initial load fallbacked to local data", err);
+    setIsOnline(false);
+    setProducts(INITIAL_PRODUCTS);
+    setCustomers(INITIAL_CUSTOMERS);
+    setOfficers(INITIAL_OFFICERS);
+    setSales([]);
+    setUsers([]);
+  } finally {
+    setIsDbLoading(false);
+  }
+};
 
   useEffect(() => {
     initDb();
@@ -330,22 +340,36 @@ export default function App() {
 
   useEffect(() => {
     const syncWithDb = async () => {
-      if (!isDbLoading && isOnline && userRole === 'ADMIN') {
-        setIsSyncing(true);
-        try {
-          await Promise.all([
-            DatabaseService.saveProducts(products),
-            DatabaseService.saveCustomers(customers),
-            DatabaseService.saveOfficers(officers),
-            DatabaseService.saveUsers(users)
-          ]);
-        } catch (err) {
-          console.error("Sync failed", err);
-          setIsOnline(false);
-        } finally {
-          setIsSyncing(false);
-        }
-      }
+      if (isDbLoading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white overflow-hidden">
+      <div className="flex flex-col items-center gap-6 text-center px-6">
+        <div className="relative">
+          <div className="w-24 h-24 rounded-3xl bg-[#722f37] flex items-center justify-center shadow-2xl shadow-rose-900/40">
+            <Building2 size={44} />
+          </div>
+          <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-slate-800 rounded-full flex items-center justify-center border-2 border-slate-900">
+            <Loader2 size={16} className="animate-spin text-[#722f37]" />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="text-2xl font-black tracking-[0.15em] uppercase">ABS FEED ERP</h2>
+          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Connecting to server...</p>
+        </div>
+
+        {/* Progress bar */}
+        <div className="w-64 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+          <div className="h-full bg-[#722f37] rounded-full animate-pulse w-3/4" />
+        </div>
+
+        <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest max-w-xs leading-relaxed">
+          Server is waking up — this may take up to 30 seconds on first load
+        </p>
+      </div>
+    </div>
+  );
+}
     };
 
     const timeout = setTimeout(syncWithDb, 3000); 

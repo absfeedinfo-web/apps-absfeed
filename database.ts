@@ -13,45 +13,73 @@ export class DatabaseService {
    * Probes possible API endpoints to find the working one.
    */
   static async checkConnection(): Promise<boolean> {
-    const hostname = window.location.hostname || 'localhost';
-    const protocol = window.location.protocol;
-    
-    // Possible API roots to check
-    const candidates = [
-      ...(ENV_API_URL ? [ENV_API_URL] : []),
-      '/api',
-      `http://localhost:5000/api`,
-      `http://127.0.0.1:5000/api`,
-    ];
+  const candidates = [
+    ...(ENV_API_URL ? [ENV_API_URL] : []),
+    '/api',
+    `http://localhost:5000/api`,
+    `http://127.0.0.1:5000/api`,
+  ];
 
-    for (const url of candidates) {
+  // Try each candidate once quickly (for local dev)
+  for (const url of candidates) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1500);
+      const response = await fetch(`${url}/health`, {
+        method: 'GET',
+        signal: controller.signal,
+        mode: 'cors'
+      });
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        detectedApiUrl = url;
+        isBackendAvailable = true;
+        console.log(`ABS ERP: Backend discovered at ${url}`);
+        return true;
+      }
+    } catch (e) {
+      // Continue to next candidate
+    }
+  }
+
+  // ✅ NEW: If all failed, retry ENV_API_URL with backoff (for Render cold start)
+  if (ENV_API_URL) {
+    console.warn("ABS ERP: No backend detected. Waiting for Render to wake up...");
+    
+    let delay = 2000; // start at 2 seconds
+    const maxRetries = 10; // up to ~60 seconds total wait
+
+    for (let i = 0; i < maxRetries; i++) {
+      await new Promise(r => setTimeout(r, delay));
+      delay = Math.min(delay * 1.5, 10000); // grow delay, max 10s
+
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 1500);
-        
-        const response = await fetch(`${url}/health`, { 
-          method: 'GET', 
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout per try
+        const response = await fetch(`${ENV_API_URL}/health`, {
+          method: 'GET',
           signal: controller.signal,
           mode: 'cors'
         });
-        
         clearTimeout(timeoutId);
-        
+
         if (response.ok) {
-          detectedApiUrl = url;
+          detectedApiUrl = ENV_API_URL;
           isBackendAvailable = true;
-          console.log(`ABS ERP: Backend discovered at ${url}`);
+          console.log(`ABS ERP: Backend discovered at ${ENV_API_URL}`);
           return true;
         }
       } catch (e) {
-        // Continue to next candidate
+        console.warn(`ABS ERP: Retry ${i + 1}/${maxRetries} failed. Retrying in ${delay / 1000}s...`);
       }
     }
-
-    isBackendAvailable = false;
-    console.warn("ABS ERP: No backend detected. Operating in Local Mode.");
-    return false;
   }
+
+  isBackendAvailable = false;
+  console.warn("ABS ERP: No backend detected. Operating in Local Mode.");
+  return false;
+}
 
   private static async request(endpoint: string, method: string = 'GET', body: any = null) {
     // If no URL discovered yet, try to discover it
