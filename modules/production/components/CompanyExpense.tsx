@@ -93,12 +93,12 @@ export const CompanyExpense: React.FC<CompanyExpenseProps> = ({ expenses, setExp
             body { font-family: 'Inter', sans-serif; }
           </style>
         </head>
-        <body class="p-4">
+        <body class="p-10">
             <div class="border-b-4 border-[#722f37] pb-3 text-center mb-4">
               <div class="flex justify-center">
-                <div class="flex-1 text-center px-4 max-w-3xl">
-                  <h1 class="text-3xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
-                  <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
+              <div class="flex-1 text-center px-4 max-w-3xl">
+                <h1 class="text-3xl font-black text-[#722f37] uppercase leading-none tracking-tighter">ABS FEED INDUSTRIES LIMITED</h1>
+                <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
                 
                 <div class="grid grid-cols-2 gap-10 text-[9px] mt-4 font-bold text-slate-500 text-left">
                   <div class="border-l-2 border-slate-200 pl-4">
@@ -114,6 +114,7 @@ export const CompanyExpense: React.FC<CompanyExpenseProps> = ({ expenses, setExp
                 </div>
               </div>
             </div>
+
               <div class="mt-8 flex justify-center">
                 <div class="bg-slate-900 text-white px-10 py-2.5 rounded-full text-[12px] font-black uppercase tracking-[0.4em] shadow-xl">
                   COMPANY EXPENSES REPORT
@@ -170,6 +171,7 @@ export const CompanyExpense: React.FC<CompanyExpenseProps> = ({ expenses, setExp
                 </div>
               </div>
             </div>
+
           <script>
             window.onload = () => {
               window.print();
