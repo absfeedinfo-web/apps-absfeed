@@ -94,30 +94,26 @@ export const CompanyExpense: React.FC<CompanyExpenseProps> = ({ expenses, setExp
           </style>
         </head>
         <body class="p-4">
-          <div class="max-w-5xl mx-auto">
             <div class="border-b-4 border-[#722f37] pb-3 text-center mb-4">
-              <div class="flex justify-between items-start">
-                <div class="w-20 h-20 bg-[#722f37] rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0">
-                  <span class="text-2xl font-black italic">ABS</span>
-                </div>
-                <div class="flex-1 text-center px-4">
-                  <h1 class="text-4xl font-black text-[#722f37] uppercase leading-none tracking-tighter">ABS FEED</h1>
+              <div class="flex justify-center">
+                <div class="flex-1 text-center px-4 max-w-3xl">
+                  <h1 class="text-3xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
                   <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
-                  <div class="grid grid-cols-2 gap-8 text-[9px] mt-4 font-bold text-slate-500 text-left">
-                    <div class="border-l-2 border-slate-200 pl-4">
-                      <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Head Office:</p>
-                      <p>House No. 12 (4th floor), Road No. 25, Sector-07, Uttara, Dhaka-1230</p>
-                      <p>Email: absfeed.info@gmail.com | Phone: +8809638-201686</p>
-                    </div>
-                    <div class="text-right border-r-2 border-slate-200 pr-4">
-                      <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Regional Office:</p>
-                      <p>Ahyan City, Bagerdanga, Fultola, Khulna-9210</p>
-                      <p>Phone: +8801918-594466 | Web: www.absfeed.com</p>
-                    </div>
+                
+                <div class="grid grid-cols-2 gap-10 text-[9px] mt-4 font-bold text-slate-500 text-left">
+                  <div class="border-l-2 border-slate-200 pl-4">
+                    <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Head Office:</p>
+                    <p>House No. 12 (4th floor), Road No. 25, Sector-07, Uttara, Dhaka-1230</p>
+                    <p>Email: absfeed.info@gmail.com | Phone: +8809638-201686</p>
+                  </div>
+                  <div class="text-right border-r-2 border-slate-200 pr-4">
+                    <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Regional Office:</p>
+                    <p>Ahyan City, Bagerdanga, Fultola, Khulna-9210</p>
+                    <p>Phone: +8801918-594466 | Web: www.absfeed.com</p>
                   </div>
                 </div>
-                <div class="w-20 h-20 opacity-0 shrink-0"></div>
               </div>
+            </div>
               <div class="mt-8 flex justify-center">
                 <div class="bg-slate-900 text-white px-10 py-2.5 rounded-full text-[12px] font-black uppercase tracking-[0.4em] shadow-xl">
                   COMPANY EXPENSES REPORT
@@ -174,7 +170,6 @@ export const CompanyExpense: React.FC<CompanyExpenseProps> = ({ expenses, setExp
                 </div>
               </div>
             </div>
-          </div>
           <script>
             window.onload = () => {
               window.print();
