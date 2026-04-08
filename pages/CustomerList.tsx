@@ -197,30 +197,27 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers, sales, officers,
             body { font-family: 'Inter', sans-serif; }
           </style>
         </head>
-        <body class="p-10">
-          <div class="max-w-6xl mx-auto border-4 border-[#722f37] p-10 rounded-[3rem] shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-[#722f37] opacity-5 -mr-32 -mt-32 rounded-full"></div>
-            
+        <body class="p-10">          
             <div class="border-b-4 border-[#722f37] pb-6 text-center mb-8 relative">
-              <div class="flex justify-between items-start">
-                <div class="flex-1 text-center px-4">
-                  <h1 class="text-4xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
-                  <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
-                  
-                  <div class="grid grid-cols-2 gap-8 text-[9px] mt-4 font-bold text-slate-500 text-left">
-                    <div class="border-l-2 border-slate-200 pl-4">
-                      <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Head Office:</p>
-                      <p>House No. 12 (4th floor), Road No. 25, Sector-07, Uttara, Dhaka-1230</p>
-                      <p>Email: absfeed.info@gmail.com | Phone: +8809638-201686</p>
-                    </div>
-                    <div class="text-right border-r-2 border-slate-200 pr-4">
-                      <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Regional Office:</p>
-                      <p>Ahyan City, Bagerdanga, Fultola, Khulna-9210</p>
-                      <p>Phone: +8801918-594466 | Web: www.absfeed.com</p>
-                    </div>
+              <div class="flex justify-center">
+              <div class="flex-1 text-center px-4 max-w-3xl">
+                <h1 class="text-3xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
+                <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
+                
+                <div class="grid grid-cols-2 gap-10 text-[9px] mt-4 font-bold text-slate-500 text-left">
+                  <div class="border-l-2 border-slate-200 pl-4">
+                    <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Head Office:</p>
+                    <p>House No. 12 (4th floor), Road No. 25, Sector-07, Uttara, Dhaka-1230</p>
+                    <p>Email: absfeed.info@gmail.com | Phone: +8809638-201686</p>
+                  </div>
+                  <div class="text-right border-r-2 border-slate-200 pr-4">
+                    <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Regional Office:</p>
+                    <p>Ahyan City, Bagerdanga, Fultola, Khulna-9210</p>
+                    <p>Phone: +8801918-594466 | Web: www.absfeed.com</p>
                   </div>
                 </div>
               </div>
+            </div>
 
               <div class="mt-8 flex justify-center">
                 <div class="bg-slate-900 text-white px-10 py-2.5 rounded-full text-[12px] font-black uppercase tracking-[0.4em] shadow-xl border-2 border-white/20">
@@ -303,7 +300,6 @@ const CustomerList: React.FC<CustomerListProps> = ({ customers, sales, officers,
             <div class="mt-16 pt-8 border-t border-slate-100 text-center relative z-10">
               <p class="text-[9px] font-bold text-slate-400 uppercase tracking-[0.5em] mb-4">w w w . a b s f e e d . c o m</p>
             </div>
-          </div>
           <script>
             window.onload = () => {
               window.print();

@@ -56,21 +56,13 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
           </style>
         </head>
         <body>
-          <div class="max-w-5xl mx-auto bg-white p-12 rounded-[3rem] shadow-2xl border border-slate-100 relative overflow-hidden">
-            <!-- Decorative Elements -->
-            <div class="absolute top-0 right-0 w-64 h-64 bg-rose-50 rounded-full -mr-32 -mt-32 opacity-50"></div>
-            <div class="absolute bottom-0 left-0 w-64 h-64 bg-slate-50 rounded-full -ml-32 -mb-32 opacity-50"></div>
-
             <div class="border-b-4 border-[#722f37] pb-6 text-center mb-8 relative">
-              <div class="flex justify-between items-start">
-                <div class="w-20 h-20 bg-[#722f37] rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0">
-                  <span class="text-2xl font-black italic">ABS</span>
-                </div>
-                <div class="flex-1 text-center px-4">
-                  <h1 class="text-4xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
+              <div class="flex justify-center">
+                <div class="flex-1 text-center px-4 max-w-3xl">
+                  <h1 class="text-3xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
                   <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
                   
-                  <div class="grid grid-cols-2 gap-8 text-[9px] mt-4 font-bold text-slate-500 text-left">
+                  <div class="grid grid-cols-2 gap-10 text-[9px] mt-4 font-bold text-slate-500 text-left">
                     <div class="border-l-2 border-slate-200 pl-4">
                       <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Head Office:</p>
                       <p>House No. 12 (4th floor), Road No. 25, Sector-07, Uttara, Dhaka-1230</p>
@@ -83,7 +75,6 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
                     </div>
                   </div>
                 </div>
-                <div class="w-20 h-20 opacity-0 shrink-0"></div>
               </div>
 
               <div class="mt-8 flex justify-center">
@@ -155,11 +146,10 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
                 <p class="text-[10px] font-black text-slate-300 tracking-[0.5em] uppercase">w w w . a b s f e e d . c o m</p>
               </div>
             </div>
-          </div>
           <script>
             window.onload = () => {
               window.print();
-              // window.close(); // Optional: close window after printing
+              setTimeout(() => window.close(), 500);
             };
           </script>
         </body>
@@ -196,30 +186,33 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
           <div class="max-w-4xl mx-auto border-2 border-slate-200 p-8 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-48 h-48 bg-[#722f37] opacity-5 -mr-24 -mt-24 rounded-full"></div>
             
-            <div class="border-b-2 border-slate-200 pb-6 text-center mb-6 relative">
-              <div class="text-center px-4">
-                <h1 class="text-3xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
-                <p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
-                
-                <div class="grid grid-cols-2 gap-8 text-[8px] mt-4 font-bold text-slate-500 text-left">
-                  <div class="border-l-2 border-slate-200 pl-4">
-                    <p class="font-black text-[#722f37] uppercase text-[9px] mb-1">Head Office:</p>
-                    <p>House No. 12 (4th floor), Road No. 25, Sector-07, Uttara, Dhaka-1230</p>
-                    <p>Email: absfeed.info@gmail.com | Phone: +8809638-201686</p>
-                  </div>
-                  <div class="text-right border-r-2 border-slate-200 pr-4">
-                    <p class="font-black text-[#722f37] uppercase text-[9px] mb-1">Regional Office:</p>
-                    <p>Ahyan City, Bagerdanga, Fultola, Khulna-9210</p>
-                    <p>Phone: +8801918-594466 | Web: www.absfeed.com</p>
+              <div class="border-b-2 border-slate-200 pb-6 text-center mb-6 relative">
+                <div class="text-center px-4">
+                  <h1 class="text-3xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
+                  <p class="text-[9px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
+                  
+                  <div class="grid grid-cols-2 gap-8 text-[8px] mt-4 font-bold text-slate-500 text-left">
+                    <div class="border-l-2 border-slate-200 pl-4">
+                      <p class="font-black text-[#722f37] uppercase text-[9px] mb-1">Head Office:</p>
+                      <p>House No. 12 (4th floor), Road No. 25, Sector-07, Uttara, Dhaka-1230</p>
+                      <p>Email: absfeed.info@gmail.com | Phone: +8809638-201686</p>
+                    </div>
+                    <div class="text-right border-r-2 border-slate-200 pr-4">
+                      <p class="font-black text-[#722f37] uppercase text-[9px] mb-1">Regional Office:</p>
+                      <p>Ahyan City, Bagerdanga, Fultola, Khulna-9210</p>
+                      <p>Phone: +8801918-594466 | Web: www.absfeed.com</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
               <div class="mt-6 flex justify-center">
                 <div class="bg-slate-900 text-white px-8 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.4em] shadow-lg border border-white/20">
                   SALES INVOICE
-                </div>
+                </div>                
+              </div>
+              <div class="flex justify-center mt-4">
+                <p class="font-black uppercase tracking-[0.2em] text-[10px] pb-0.5">CUSTOMER / OFFICE COPY</p>
               </div>
               <div class="mt-2 flex justify-between items-center px-4">
                 <div class="text-left">

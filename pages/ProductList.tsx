@@ -98,15 +98,12 @@ const ProductList: React.FC<ProductListProps> = ({ products, setProducts, onAnal
         <body class="p-10">
           <div class="max-w-6xl mx-auto">
             <div class="border-b-4 border-[#722f37] pb-6 text-center mb-8 relative">
-              <div class="flex justify-between items-start">
-                <div class="w-20 h-20 bg-[#722f37] rounded-2xl flex items-center justify-center text-white shadow-lg shrink-0">
-                  <span class="text-2xl font-black italic">ABS</span>
-                </div>
-                <div class="flex-1 text-center px-4">
+            <div class="flex justify-center">
+                <div class="flex-1 text-center px-4 max-w-3xl">
                   <h1 class="text-4xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
                   <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
                   
-                  <div class="grid grid-cols-2 gap-8 text-[9px] mt-4 font-bold text-slate-500 text-left">
+                  <div class="grid grid-cols-2 gap-10 text-[9px] mt-4 font-bold text-slate-500 text-left">
                     <div class="border-l-2 border-slate-200 pl-4">
                       <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Head Office:</p>
                       <p>House No. 12 (4th floor), Road No. 25, Sector-07, Uttara, Dhaka-1230</p>
@@ -119,7 +116,6 @@ const ProductList: React.FC<ProductListProps> = ({ products, setProducts, onAnal
                     </div>
                   </div>
                 </div>
-                <div class="w-20 h-20 opacity-0 shrink-0"></div>
               </div>
 
               <div class="mt-8 flex justify-center">

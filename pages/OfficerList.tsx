@@ -151,17 +151,14 @@ const OfficerList: React.FC<OfficerListProps> = ({ officers, sales, customers, p
             body { font-family: 'Inter', sans-serif; }
           </style>
         </head>
-        <body class="p-10">
-          <div class="max-w-6xl mx-auto border-4 border-[#722f37] p-10 rounded-[3rem] shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-[#722f37] opacity-5 -mr-32 -mt-32 rounded-full"></div>
-            
+        <body class="p-10">            
             <div class="border-b-4 border-[#722f37] pb-6 text-center mb-8 relative">
-              <div class="flex justify-between items-start">
-                <div class="flex-1 text-center px-4">
-                  <h1 class="text-4xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
+              <div class="flex justify-center">
+                <div class="flex-1 text-center px-4 max-w-3xl">
+                  <h1 class="text-3xl font-black text-[#722f37] uppercase leading-none tracking-tighter">${companyName}</h1>
                   <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 tracking-widest">(A Sister Concern of AHYAN GROUP)</p>
                   
-                  <div class="grid grid-cols-2 gap-8 text-[9px] mt-4 font-bold text-slate-500 text-left">
+                  <div class="grid grid-cols-2 gap-10 text-[9px] mt-4 font-bold text-slate-500 text-left">
                     <div class="border-l-2 border-slate-200 pl-4">
                       <p class="font-black text-[#722f37] uppercase text-[10px] mb-1">Head Office:</p>
                       <p>House No. 12 (4th floor), Road No. 25, Sector-07, Uttara, Dhaka-1230</p>
@@ -273,7 +270,6 @@ const OfficerList: React.FC<OfficerListProps> = ({ officers, sales, customers, p
             <div class="mt-16 pt-8 border-t border-slate-100 text-center relative z-10">
               <p class="text-[9px] font-bold text-slate-400 uppercase tracking-[0.5em] mb-4">w w w . a b s f e e d . c o m</p>
             </div>
-          </div>
           <script>
             window.onload = () => {
               window.print();
