@@ -21,7 +21,6 @@ export async function POST(
     const collection = db.collection(collectionName);
 
     if (!data || data.length === 0) {
-      await collection.deleteMany({});
       return NextResponse.json({ success: true, count: 0 });
     }
 
