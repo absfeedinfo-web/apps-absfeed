@@ -161,7 +161,15 @@ const Reports: React.FC<ReportsProps> = ({ sales, products, officers, customers,
   };
 
   const handlePrintInvoice = (sale: Sale) => {
-    const qrText = `INV:#ABS-${sale.invoiceNo} DATE:${sale.date} CUST:${sale.customerId} OFFICER:${sale.officerId} TOTAL:${sale.netAmount}`;
+    const qrText = [
+      `INV:#ABS-${sale.invoiceNo}`,
+      `DATE:${sale.date}`,
+      `CUST:${sale.customerId}`,
+      `OFFICER:${sale.officerId}`,
+      `TOTAL:${sale.netAmount}`,
+      `LOGIN: https://apps.absfeed.com`,
+      `WEB: https://absfeed.com`
+    ].join(' | ');
     const qrDataUrl = `https://api.qrserver.com/v1/create-qr-code/?size=80x80&ecc=H&data=${encodeURIComponent(qrText)}`;
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
