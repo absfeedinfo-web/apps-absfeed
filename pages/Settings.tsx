@@ -3,6 +3,7 @@ import React, { useState, useContext } from 'react';
 import { User, UserRole, Customer, Officer } from '../types';
 import { Save, Trash2, UserPlus, Shield, User as UserIcon, Key, Search, X } from 'lucide-react';
 import { LanguageContext } from '../App';
+import { DatabaseService } from '../database';
 
 interface SettingsProps {
   users: User[];
@@ -23,36 +24,43 @@ const Settings: React.FC<SettingsProps> = ({ users, setUsers, customers, officer
     name: ''
   });
 
-  const handleAddUser = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (role === 'VISITOR') {
-      alert(lang === 'BN' ? "ভিজিটর মোডে সেভ করা সম্ভব নয়।" : "Saving is not allowed in Visitor mode.");
-      return;
-    }
-    if (!formData.username || !formData.password || !formData.id) return;
+  const handleAddUser = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (role === 'VISITOR') {
+    alert(lang === 'BN' ? "ভিজিটর মোডে সেভ করা সম্ভব নয়।" : "Saving is not allowed in Visitor mode.");
+    return;
+  }
+  if (!formData.username || !formData.password || !formData.id) return;
 
-    const newUser: User = {
-      id: formData.id,
-      username: formData.username,
-      password: formData.password,
-      role: formData.role as UserRole,
-      name: formData.name || ''
-    };
-
-    setUsers(prev => [...prev, newUser]);
-    setShowModal(false);
-    setFormData({ role: UserRole.CUSTOMER, username: '', password: '', name: '' });
+  const newUser: User = {
+    id: formData.id,
+    username: formData.username,
+    password: formData.password,
+    role: formData.role as UserRole,
+    name: formData.name || ''
   };
 
-  const deleteUser = (id: string) => {
-    if (role === 'VISITOR') {
-      alert(lang === 'BN' ? "ভিজিটর মোডে মুছে ফেলা সম্ভব নয়।" : "Deleting is not allowed in Visitor mode.");
-      return;
-    }
-    if (confirm(lang === 'BN' ? 'আপনি কি নিশ্চিত?' : 'Are you sure?')) {
-      setUsers(prev => prev.filter(u => u.id !== id));
-    }
-  };
+  const updatedUsers = [...users, newUser];
+  setUsers(updatedUsers);
+  // ✅ Save to DB
+  await DatabaseService.saveUsers(updatedUsers);
+
+  setShowModal(false);
+  setFormData({ role: UserRole.CUSTOMER, username: '', password: '', name: '' });
+};
+
+  const deleteUser = async (id: string) => {
+  if (role === 'VISITOR') {
+    alert(lang === 'BN' ? "ভিজিটর মোডে মুছে ফেলা সম্ভব নয়।" : "Deleting is not allowed in Visitor mode.");
+    return;
+  }
+  if (confirm(lang === 'BN' ? 'আপনি কি নিশ্চিত?' : 'Are you sure?')) {
+    const updatedUsers = users.filter(u => u.id !== id);
+    setUsers(updatedUsers);
+    // ✅ Save to DB
+    await DatabaseService.saveUsers(updatedUsers);
+  }
+};
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
